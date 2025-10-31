@@ -15,6 +15,7 @@ export default function Home() {
   const [currentBgIndex, setCurrentBgIndex] = useState(0);
   const [nextBgIndex, setNextBgIndex] = useState(1);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [particles, setParticles] = useState([]);
   
   // Performance monitoring
   const performanceMetrics = usePerformanceMonitor();
@@ -76,6 +77,22 @@ export default function Home() {
       console.log(`📸 Image Loading Progress: ${loadingProgress.toFixed(1)}%`);
     }
   }, [loadingProgress]);
+
+  // Generate particles on client side only
+  useEffect(() => {
+    const generateParticles = () => {
+      const particleData = Array.from({ length: 20 }, () => ({
+        width: Math.random() * 4 + 2,
+        height: Math.random() * 4 + 2,
+        left: Math.random() * 100,
+        top: Math.random() * 100,
+        animationDuration: Math.random() * 3 + 2,
+        animationDelay: Math.random() * 2,
+      }));
+      setParticles(particleData);
+    };
+    generateParticles();
+  }, []);
  
   useEffect(() => {
     const loaderTimeline = gsap.timeline({
@@ -247,18 +264,36 @@ export default function Home() {
           }}
         />
         
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-blue-300/30 z-10"></div>
+        {/* Overlay with gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-400/25 via-cyan-400/30 to-blue-600/20 z-10"></div>
+        
+        {/* Animated Particles Layer */}
+        <div className="absolute inset-0 z-[15] pointer-events-none overflow-hidden">
+          {particles.map((particle, i) => (
+            <div
+              key={i}
+              className="absolute rounded-full bg-cyan-400/30 animate-pulse"
+              style={{
+                width: `${particle.width}px`,
+                height: `${particle.height}px`,
+                left: `${particle.left}%`,
+                top: `${particle.top}%`,
+                animationDuration: `${particle.animationDuration}s`,
+                animationDelay: `${particle.animationDelay}s`,
+              }}
+            />
+          ))}
+        </div>
 
         {/* External Resources Buttons - Below Navbar */}
         {!loading && (
-          <div className="absolute top-24 left-1/2 transform -translate-x-1/2 z-20">
+          <div className="absolute top-24 left-1/2 transform -translate-x-1/2 z-[100] pointer-events-auto">
             <div className="flex gap-2 justify-center whitespace-nowrap">
               <a
                 href="https://complain.kwsc.gos.pk/add/new/connection"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/90 backdrop-blur-sm text-blue-800 px-3 py-2 rounded-lg hover:bg-white hover:text-blue-900 transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-xs"
+                className="bg-white/90 backdrop-blur-sm text-blue-800 px-3 py-2 rounded-lg hover:bg-white hover:text-blue-900 transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-[12px]"
               >
                 New Connection
               </a>
@@ -266,7 +301,7 @@ export default function Home() {
                 href="https://web.kwsb.crdc.biz/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/90 backdrop-blur-sm text-blue-800 px-3 py-2 rounded-lg hover:bg-white hover:text-blue-900 transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-xs"
+                className="bg-white/90 backdrop-blur-sm text-blue-800 px-3 py-2 rounded-lg hover:bg-white hover:text-blue-900 transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-[12px]"
               >
                 Book Tanker
               </a>
@@ -274,7 +309,7 @@ export default function Home() {
                 href="https://complain.kwsc.gos.pk"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/90 backdrop-blur-sm text-blue-800 px-3 py-2 rounded-lg hover:bg-white hover:text-blue-900 transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-xs"
+                className="bg-white/90 backdrop-blur-sm text-blue-800 px-3 py-2 rounded-lg hover:bg-white hover:text-blue-900 transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-[12px]"
               >
                 E-Complaint
               </a>
@@ -282,7 +317,7 @@ export default function Home() {
                 href="https://www.kwsc.gos.pk/e-bill"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/90 backdrop-blur-sm text-blue-800 px-3 py-2 rounded-lg hover:bg-white hover:text-blue-900 transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-xs"
+                className="bg-white/90 backdrop-blur-sm text-blue-800 px-3 py-2 rounded-lg hover:bg-white hover:text-blue-900 transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-[12px]"
               >
                 Get Your Bill
               </a>
@@ -290,18 +325,18 @@ export default function Home() {
           </div>
         )}        
         {/* Content (Ensures text and images are above overlay) */}
-        <div className="relative z-20 max-w-[75%] m-20 mx-auto flex items-center justify-center text-center">
-          <div className="w-[85%]">
+        <div className="relative z-20 max-w-[75%] m-20 mx-auto flex items-center justify-center text-center pointer-events-none">
+          <div className="w-[160%] pointer-events-auto">
           
           {/* Karachi City of Lights - First slide */}
           {showCityOfLights && (
             <div className="slide-in">
-              <h1 className="text-[8vh] font-bold text-white animate-pulse"
+              <h1 className="text-[72px] font-bold text-white animate-pulse"
                   style={{
                     textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(255,255,255,0.6), 0 0 60px rgba(255,255,255,0.4)',
                     filter: 'drop-shadow(0 0 30px rgba(255,255,255,0.9))'
                   }}>
-                KARACHI CITY OF LIGHTS
+                KARACHI THE CITY OF LIGHTS
               </h1>
             </div>
           )}
@@ -310,20 +345,20 @@ export default function Home() {
           {showMainContent && (
             <div className="slide-in">
               {/* Glassmorphism Container */}
-              <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-3xl p-8 shadow-2xl">
+              <div className="flex flex-col justify-center items-center backdrop-blur-lg bg-white/20 border border-white/20 rounded-xl p-8 shadow-2xl pointer-events-none animate-float">
                 <h2
-                  className="animated-header text-[5vh] font-bold text-cyan-400 drop-shadow-[0_0_20px_rgba(34,211,238,0.8)]"
+                  className="mx-auto text-center animated-header text-[42px] font-bold text-white-300 animate-glow"
                 >
-              Serving Karachi with Clean Water & Efficient Sewerage
+                  COMMITTED TO DELIVER!
             </h2>
                 <p
-                  className="mt-6 text-[2.5vh] text-cyan-300 drop-shadow-[0_0_12px_rgba(34,211,238,0.6)]"
+                  className="mx-auto text-center mt-6 text-[22px] text-white-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.8)] animate-pulse"
                 >
               Karachi Water and Sewerage Corporation (KW&SC) is committed to
               <br /> providing reliable water and sewerage services to Karachi.
             </p>
 
-                <p className="mt-6 text-[2vh] text-cyan-300 drop-shadow-[0_0_12px_rgba(34,211,238,0.6)]"
+                <p className="mt-6 text-[16px] text-white-300 drop-shadow-[0_0_15px_rgba(34,211,238,0.8)]"
                 >
               <TypeAnimation
                 sequence={[
@@ -345,16 +380,13 @@ export default function Home() {
               />
             </p>
 
-                <div className="text-center mt-16 action-buttons-wrapper relative z-20">
+                <div className="text-center mt-16 action-buttons-wrapper relative z-20 pointer-events-auto">
               <Fade direction="up" triggerOnce duration={1500} delay={9}>
                   <Link
                     href="/aboutus"
-                    className="relative z-20 text-xl px-6 py-3 border rounded-lg border-white font-bold 
-             hover:-translate-y-1 transition-all duration-300 ease-in-out 
-             hover:shadow-[inset_-5em_0_0_0_theme(colors.blue.700),inset_4.5em_0_0_0_theme(colors.blue.700)] 
-             focus:shadow-[inset_-5em_0_0_0_theme(colors.blue.700),inset_4.5em_0_0_0_theme(colors.blue.700)] 
-             inline-flex group items-center pl-6 bg-white/10 backdrop-blur-sm hover:bg-white/20 cursor-pointer"
-                    style={{ pointerEvents: 'auto' }}
+                      className="relative z-20 text-[18px] px-6 py-3 border-2 border-cyan-400 rounded-lg font-bold 
+             hover:-translate-y-1 hover:border-cyan-300 hover:shadow-[0_0_30px_rgba(34,211,238,0.6)] transition-all duration-300 ease-in-out 
+             inline-flex group items-center pl-6 bg-white/10 backdrop-blur-sm hover:bg-gradient-to-r hover:from-cyan-500/30 hover:to-blue-500/30 cursor-pointer"
                     onClick={() => console.log('Button clicked!')}
                   >
                     Learn About KW&SC

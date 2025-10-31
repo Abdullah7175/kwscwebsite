@@ -157,7 +157,7 @@ export default function ContactUs() {
             </div>
             <div className="w-1/2 mt-16">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3619.1234567890123!2d67.103736!3d24.907702!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33e8b8b8b8b8b%3A0x8b8b8b8b8b8b8b8b!2s9th%20Mile%20Karsaz%2C%20Main%20Shahrah-e-Faisal%2C%20Karachi-75350%2C%20Pakistan!5e0!3m2!1sen!2sus!4v1625063004479!5m2!1sen!2sus"
+                src="https://www.google.com/maps?q=24.871416570262873,67.09184371090852&hl=en&z=15&output=embed"
                 width="100%"
                 height="500"
                 style={{ border: 0 }}

@@ -67,7 +67,7 @@ const Navbar = () => {
             <img src="/kwsc logo.png" alt="KW&SC Logo" width={90} height={110} />
           </div>
           <nav>
-            <ul className="flex gap-10 font-bold uppercase">
+            <ul className="flex gap-10 text-xl font-bold uppercase">
               {NavLinks.map((loop) => (
                 <li key={loop.href}>
                   <Link
@@ -75,11 +75,11 @@ const Navbar = () => {
                     className={`transition-colors ${
                       isScrolled
                         ? pathname === loop.href
-                          ? "text-blue-600"
-                          : "text-black hover:text-blue-600"
+                          ? "text-blue-300"
+                          : "text-black hover:text-blue-300"
                         : pathname === loop.href
-                        ? "text-blue-600"
-                        : "text-white hover:text-blue-600"
+                        ? "text-blue-300"
+                        : "text-white hover:text-blue-300 animate-glow"
                     }`}
                     onClick={() => setIsOpen(false)}
                   >

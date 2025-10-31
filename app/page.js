@@ -4,7 +4,7 @@ import Main from "@/components/Main";
 import WorkFlow from "@/components/Workflow";
 import Services from "@/components/Services";
 import Counter from "@/components/Counter";
-import Slider from "@/components/Slider";
+// import Slider from "@/components/Slider";
 import Subscribe from "@/components/Subscribe";
 export default function Home() {
  
@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <>
       <Main/>
-      <Slider />
+      {/* <Slider /> */}
       <Whoarewe />
       <Services/>
       <WorkFlow />
