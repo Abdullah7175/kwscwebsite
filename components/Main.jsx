@@ -248,7 +248,7 @@ export default function Home() {
         />
         
         {/* Overlay */}
-        <div className="absolute inset-0 bg-blue-900/60 z-10"></div>
+        <div className="absolute inset-0 bg-blue-300/30 z-10"></div>
 
         {/* External Resources Buttons - Below Navbar */}
         {!loading && (
