@@ -265,7 +265,7 @@ export default function Home() {
         />
         
         {/* Overlay with gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-400/25 via-cyan-400/30 to-blue-600/20 z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-gray-900/60 to-black/90z-10"></div>
         
         {/* Animated Particles Layer */}
         <div className="absolute inset-0 z-[15] pointer-events-none overflow-hidden">
@@ -333,7 +333,7 @@ export default function Home() {
             <div className="slide-in">
               <h1 className="text-[72px] font-bold text-white animate-pulse"
                   style={{
-                    textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(255,255,255,0.6), 0 0 60px rgba(255,255,255,0.4)',
+                    
                     filter: 'drop-shadow(0 0 30px rgba(255,255,255,0.9))'
                   }}>
                 KARACHI THE CITY OF LIGHTS
@@ -345,9 +345,9 @@ export default function Home() {
           {showMainContent && (
             <div className="slide-in">
               {/* Glassmorphism Container */}
-              <div className="flex flex-col justify-center items-center backdrop-blur-lg bg-white/20 border border-white/20 rounded-xl p-8 shadow-2xl pointer-events-none animate-float">
+              <div className="flex flex-col justify-center items-center backdrop-blur-lg bg-blue/15 border border-white/20 rounded-xl p-8 shadow-2xl pointer-events-none">
                 <h2
-                  className="mx-auto text-center animated-header text-[42px] font-bold text-white-300 animate-glow"
+                  className="mx-auto text-center animated-header text-[42px] font-bold text-white-300"
                 >
                   COMMITTED TO DELIVER!
             </h2>

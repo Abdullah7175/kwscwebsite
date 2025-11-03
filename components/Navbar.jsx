@@ -79,7 +79,7 @@ const Navbar = () => {
                           : "text-black hover:text-blue-300"
                         : pathname === loop.href
                         ? "text-blue-300"
-                        : "text-white hover:text-blue-300 animate-glow"
+                        : "text-white hover:text-blue-300"
                     }`}
                     onClick={() => setIsOpen(false)}
                   >
