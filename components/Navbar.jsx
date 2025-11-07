@@ -3,13 +3,15 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
-import { X } from "lucide-react";
+import { X, ChevronDown } from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
   const menuRef = useRef(null);
   const linksRef = useRef([]);
+  const submenuRefs = useRef([]);
   const pathname = usePathname(); 
 
  
@@ -49,16 +51,84 @@ const Navbar = () => {
 
   const NavLinks = [
     { href: "/", text: "Home" },
-    { href: "/aboutus", text: "About Us" },
-    { href: "/ourservices", text: "What We Do" },
-    { href: "/portfolio", text: "Our Projects" },
-    { href: "/contact", text: "Contact" },
+    { 
+      href: "/aboutus", 
+      text: "About Us",
+      submenu: [
+        { href: "/aboutus", text: "Our Story" },
+        { href: "/achievements", text: "Achievements" },
+        { href: "/careers", text: "Careers" },
+      ]
+    },
+    { 
+      href: "/ourservices", 
+      text: "What We Do",
+      submenu: [
+        { href: "/ourservices", text: "Our Services" },
+        { href: "/portfolio", text: "Our Projects" },
+        { href: "/right-to-information", text: "Right to Information" },
+      ]
+    },
+    { 
+      href: "/portfolio", 
+      text: "Our Projects",
+      submenu: [
+        { href: "/portfolio", text: "All Projects" },
+        { href: "/news", text: "News & Updates" },
+      ]
+    },
+    { 
+      href: "/contact", 
+      text: "Contact",
+      submenu: [
+        { href: "/contact", text: "Contact Us" },
+        { href: "/faqs", text: "FAQs" },
+      ]
+    },
   ];
+
+  // Handle submenu hover animations
+  useEffect(() => {
+    if (hoveredIndex !== null && NavLinks[hoveredIndex]?.submenu) {
+      const submenuRef = submenuRefs.current[hoveredIndex];
+      if (submenuRef) {
+        submenuRef.style.display = "block";
+        gsap.fromTo(
+          submenuRef,
+          {
+            opacity: 0,
+            y: 10,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.3,
+            ease: "power2.out",
+          }
+        );
+      }
+    } else {
+      // Hide all submenus when not hovering
+      submenuRefs.current.forEach((ref, index) => {
+        if (ref && hoveredIndex !== index) {
+          gsap.to(ref, {
+            opacity: 0,
+            y: 10,
+            duration: 0.2,
+            ease: "power2.in",
+            onComplete: () => {
+              if (ref) ref.style.display = "none";
+            },
+          });
+        }
+      });
+    }
+  }, [hoveredIndex]);
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-40 transition-all duration-300 ${
+        className={`fixed top-0 left-0 w-full z-[110] transition-all duration-300 ${
           isScrolled ? "bg-white shadow-lg" : "bg-transparent"
         }`}
       >
@@ -68,11 +138,16 @@ const Navbar = () => {
           </div>
           <nav>
             <ul className="flex gap-10 text-xl font-bold uppercase">
-              {NavLinks.map((loop) => (
-                <li key={loop.href}>
+              {NavLinks.map((loop, index) => (
+                <li 
+                  key={loop.href}
+                  className="relative group"
+                  onMouseEnter={() => loop.submenu && setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                >
                   <Link
                     href={loop.href}
-                    className={`transition-colors ${
+                    className={`transition-colors flex items-center gap-1 ${
                       isScrolled
                         ? pathname === loop.href
                           ? "text-blue-300"
@@ -84,7 +159,44 @@ const Navbar = () => {
                     onClick={() => setIsOpen(false)}
                   >
                     {loop.text}
+                    {loop.submenu && (
+                      <ChevronDown 
+                        size={16} 
+                        className={`transition-transform duration-300 ${
+                          hoveredIndex === index ? 'rotate-180' : ''
+                        }`}
+                      />
+                    )}
                   </Link>
+                  {loop.submenu && (
+                    <div
+                      ref={(el) => (submenuRefs.current[index] = el)}
+                      className={`absolute top-full left-0 mt-2 min-w-[220px] shadow-xl rounded-lg overflow-hidden z-[120] backdrop-blur-sm ${
+                        isScrolled ? "bg-white" : "bg-white/95"
+                      }`}
+                      style={{ display: "none", opacity: 0 }}
+                      onMouseEnter={() => setHoveredIndex(index)}
+                      onMouseLeave={() => setHoveredIndex(null)}
+                    >
+                      <ul className="py-2">
+                        {loop.submenu.map((subItem) => (
+                          <li key={subItem.href}>
+                            <Link
+                              href={subItem.href}
+                              className={`block px-6 py-3 text-sm font-semibold uppercase transition-all duration-200 ${
+                                pathname === subItem.href
+                                  ? "text-blue-600 bg-blue-50 border-l-4 border-blue-600"
+                                  : "text-gray-700 hover:text-blue-600 hover:bg-blue-50 hover:border-l-4 hover:border-blue-400"
+                              }`}
+                              onClick={() => setIsOpen(false)}
+                            >
+                              {subItem.text}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>
@@ -105,7 +217,7 @@ const Navbar = () => {
           </div>
           <div
             ref={menuRef}
-            className={`fixed inset-0 bg-black overflow-hidden flex flex-col items-start justify-start z-50 transition-all ${
+            className={`fixed inset-0 bg-black overflow-hidden flex flex-col items-start justify-start z-[115] transition-all ${
               isOpen ? "h-screen" : "h-0"
             }`}
           >
